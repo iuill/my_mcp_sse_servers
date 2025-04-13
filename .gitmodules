@@ -1,0 +1,9 @@
+[submodule "brave-search-sse-mcp"]
+	path = brave-search-sse-mcp
+	url = https://github.com/iuill/brave-search-sse-mcp
+[submodule "playwright-mcp-docker"]
+	path = playwright-mcp-docker
+	url = https://github.com/iuill/playwright-mcp-docker
+[submodule "mcp_grareco"]
+	path = mcp_grareco
+	url = https://github.com/iuill/mcp_grareco

@@ -1,0 +1,69 @@
+name: my_mcp_sse_servers
+
+services:
+  brave-search-mcp:
+    build:
+      context: ./brave-search-sse-mcp # サブモジュールへのパス
+      dockerfile: Dockerfile
+    container_name: brave-search-mcp-server
+    restart: ${BRAVE_RESTART_POLICY:-unless-stopped}
+    ports:
+      - "${BRAVE_PORT:-3101}:${BRAVE_PORT:-3101}"
+    networks:
+      - mcp-network
+    env_file:
+      - ./brave-search-sse-mcp/.env
+    environment:
+      PORT: ${BRAVE_PORT:-3101}
+
+  mcp_grareco:
+    build:
+      context: ./mcp_grareco # サブモジュールへのパス
+      dockerfile: Dockerfile
+    container_name: mcp_grareco
+    ports:
+      - "${GRARECO_PORT:-3102}:${GRARECO_PORT:-3102}"
+    env_file:
+      - ./mcp_grareco/.env
+    environment:
+      PORT: ${GRARECO_PORT:-3102}
+      GRARECO_OUTPUT_DIR: /app/output
+      NODE_ENV: production
+    volumes:
+      - ./mcp_grareco/output:/app/output
+    restart: ${GRARECO_RESTART_POLICY:-unless-stopped}
+    networks:
+      - mcp-network
+
+  playwright-mcp:
+    build:
+      context: ./playwright-mcp-docker # サブモジュールへのパス
+      dockerfile: Dockerfile
+    container_name: playwright-mcp-server
+    ports:
+      - "${MCP_HOST_PORT:-3103}:${MCP_HOST_PORT:-3103}"
+    env_file:
+      # 本来はplaywright-mcp-docker/.envを参照させたいが正常に.envを読み込まないため、
+      # ルートディレクトリに.envを配置しそちらを読み込む形とする
+      #- ./playwright-mcp-docker/.env
+      - .env
+    environment:
+      - HEADLESS=${HEADLESS:-false}
+      - MCP_PORT=${MCP_HOST_PORT:-3193}
+      - DISPLAY=${DISPLAY:-:0}
+      - WAYLAND_DISPLAY=${WAYLAND_DISPLAY:-wayland-0}
+      - XDG_RUNTIME_DIR=${XDG_RUNTIME_DIR:-/run/user/0}
+    volumes:
+      # --- Volume mounts for headed mode (WSL2 + WSLg) ---
+      - ${X11_HOST_PATH:-/tmp/.X11-unix}:/tmp/.X11-unix:rw
+      - ${WSLG_HOST_PATH:-/mnt/wslg}:/mnt/wslg:ro
+    tty: true
+    networks:
+      - mcp-network
+    # # shm_size: '2gb' # Increase shared memory size if needed
+    # # init: true # Use an init process to reap zombie processes
+
+networks:
+  mcp-network:
+    driver: bridge
+    name: mcp-network # ネットワーク名を明示的に指定
