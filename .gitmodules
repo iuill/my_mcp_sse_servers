@@ -7,3 +7,6 @@
 [submodule "mcp_grareco"]
 	path = mcp_grareco
 	url = https://github.com/iuill/mcp_grareco
+[submodule "firecrawl-sse-mcp"]
+	path = firecrawl-sse-mcp
+	url = https://github.com/iuill/firecrawl-sse-mcp

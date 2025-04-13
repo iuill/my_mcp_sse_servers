@@ -49,7 +49,7 @@ services:
       - .env
     environment:
       - HEADLESS=${HEADLESS:-false}
-      - MCP_PORT=${MCP_HOST_PORT:-3193}
+      - MCP_PORT=${MCP_HOST_PORT:-3103}
       - DISPLAY=${DISPLAY:-:0}
       - WAYLAND_DISPLAY=${WAYLAND_DISPLAY:-wayland-0}
       - XDG_RUNTIME_DIR=${XDG_RUNTIME_DIR:-/run/user/0}
@@ -62,6 +62,19 @@ services:
       - mcp-network
     # # shm_size: '2gb' # Increase shared memory size if needed
     # # init: true # Use an init process to reap zombie processes
+
+  firecrawl-sse-mcp:
+    build:
+      context: ./firecrawl-sse-mcp # サブモジュールへのパス
+      dockerfile: Dockerfile
+    container_name: firecrawl-sse-mcp-server
+    restart: ${FIRECRAWL_RESTART_POLICY:-unless-stopped}
+    ports:
+      - "${FIRECRAWL_PORT:-3104}:${FIRECRAWL_PORT:-3104}"
+    networks:
+      - mcp-network
+    env_file:
+      - ./firecrawl-sse-mcp/.env
 
 networks:
   mcp-network:

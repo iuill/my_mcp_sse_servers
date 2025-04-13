@@ -25,6 +25,7 @@ cp mcp_grareco/.env.sample mcp_grareco/.env
 # playwright-mcp-docker/.envのみ正常動作しないため、ルートディレクトリ直下にする
 #cp playwright-mcp-docker/.env.sample playwright-mcp-docker/.env
 cp playwright-mcp-docker/.env.sample .env
+cp firecrawl-sse-mcp/.env.example firecrawl-sse-mcp/.env
 ```
 
 ### 2. Docker Compose による起動
@@ -42,6 +43,7 @@ docker-compose up -d
 - **brave-search-sse**: Brave Search API を利用した Web 検索およびローカル検索機能を提供します。
 - **mcp_grareco**: テキストや Web ページをグラフィックレコーディング風の HTML に変換する機能を提供します。
 - **playwright-mcp-docker**: Playwright を使用してブラウザ操作を行う機能を提供します。
+- **firecrawl-sse-mcp**: Firecrawl を利用して Web ページのスクレイピング、クローリング、検索を行う機能を提供します。
 
 ## 停止
 
@@ -75,6 +77,11 @@ docker-compose down
       "url": "http://host.docker.internal:3102/sse",
       "headers": {},
       "timeout": 900
+    },
+    "firecrawl": {
+      "url": "http://host.docker.internal:3104/sse",
+      "headers": {},
+      "timeout": 30
     }
   }
 }
