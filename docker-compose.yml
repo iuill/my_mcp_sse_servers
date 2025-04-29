@@ -6,7 +6,7 @@ services:
       context: ./brave-search-sse-mcp # サブモジュールへのパス
       dockerfile: Dockerfile
     container_name: brave-search-mcp-server
-    restart: ${BRAVE_RESTART_POLICY:-unless-stopped}
+    restart: ${BRAVE_RESTART_POLICY:-always}
     ports:
       - "${BRAVE_PORT:-3101}:${BRAVE_PORT:-3101}"
     networks:
@@ -31,7 +31,7 @@ services:
       NODE_ENV: production
     volumes:
       - ./mcp_grareco/output:/app/output
-    restart: ${GRARECO_RESTART_POLICY:-unless-stopped}
+    restart: ${GRARECO_RESTART_POLICY:-always}
     networks:
       - mcp-network
 
@@ -60,6 +60,7 @@ services:
     tty: true
     networks:
       - mcp-network
+    restart: ${PLAYWRIGHT_RESTART_POLICY:-always}
     # # shm_size: '2gb' # Increase shared memory size if needed
     # # init: true # Use an init process to reap zombie processes
 
@@ -68,7 +69,7 @@ services:
       context: ./firecrawl-sse-mcp # サブモジュールへのパス
       dockerfile: Dockerfile
     container_name: firecrawl-sse-mcp-server
-    restart: ${FIRECRAWL_RESTART_POLICY:-unless-stopped}
+    restart: ${FIRECRAWL_RESTART_POLICY:-always}
     ports:
       - "${FIRECRAWL_PORT:-3104}:${FIRECRAWL_PORT:-3104}"
     networks:
