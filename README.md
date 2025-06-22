@@ -26,6 +26,7 @@ cp mcp_grareco/.env.sample mcp_grareco/.env
 #cp playwright-mcp-docker/.env.sample playwright-mcp-docker/.env
 cp playwright-mcp-docker/.env.sample .env
 cp firecrawl-sse-mcp/.env.example firecrawl-sse-mcp/.env
+cp note-mcp-server/.env.example note-mcp-server/.env
 ```
 
 ### 2. Docker Compose による起動
@@ -80,6 +81,12 @@ docker-compose down
     },
     "firecrawl": {
       "url": "http://host.docker.internal:3104/sse",
+      "headers": {},
+      "timeout": 30
+    },
+    "note_mcp": {
+      "url": "http://host.docker.internal:3105/mcp",
+      "type": "streamable-http",
       "headers": {},
       "timeout": 30
     }

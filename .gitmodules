@@ -10,3 +10,6 @@
 [submodule "firecrawl-sse-mcp"]
 	path = firecrawl-sse-mcp
 	url = https://github.com/iuill/firecrawl-sse-mcp
+[submodule "note-mcp-server"]
+	path = note-mcp-server
+	url = https://github.com/iuill/note-mcp-server

@@ -76,6 +76,18 @@ services:
       - mcp-network
     env_file:
       - ./firecrawl-sse-mcp/.env
+  note-mcp-server:
+    build:
+      context: ./note-mcp-server # サブモジュールへのパス
+      dockerfile: Dockerfile
+    container_name: note-mcp-server
+    restart: ${NOTE_RESTART_POLICY:-always}
+    ports:
+      - "${NOTE_PORT:-3105}:3000"
+    networks:
+      - mcp-network
+    env_file:
+      - ./note-mcp-server/.env
 
 networks:
   mcp-network:
